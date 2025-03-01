@@ -30,10 +30,7 @@ const schema: ZodType<FormData> = z.object({
   password: z.string().nonempty({ message: "Can't be empty" }),
 });
 
-function Login(props: {
-  darkMode: boolean;
-  setDarkMode: (status: boolean) => void;
-}) {
+function Login(props: { darkMode: boolean }) {
   const navigate = useNavigate();
 
   const [serverError, setServerError] = useState<string | null>(null);
@@ -183,15 +180,17 @@ function Login(props: {
                 >
                   Password
                 </h2>
-                <button
-                  type="button"
-                  className={clsx(
-                    props.darkMode ? "text-[#99A0AE]" : "text-[#525866]",
-                    "text-[0.75rem] leading-[1rem] font-[400] cursor-pointer outline-none hover:text-[#335CFF] transition-all duration-150 underline"
-                  )}
-                >
-                  Forgot
-                </button>
+                <Link to="/forgot-password">
+                  <button
+                    type="button"
+                    className={clsx(
+                      props.darkMode ? "text-[#99A0AE]" : "text-[#525866]",
+                      "text-[0.75rem] leading-[1rem] font-[400] cursor-pointer outline-none hover:text-[#335CFF] transition-all duration-150 underline"
+                    )}
+                  >
+                    Forgot
+                  </button>
+                </Link>
               </div>
               <input
                 {...register("password")}

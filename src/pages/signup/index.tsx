@@ -35,10 +35,7 @@ const schema: ZodType<FormData> = z.object({
     .min(8, { message: "must contain at least 8 characters" }),
 });
 
-function Signup(props: {
-  darkMode: boolean;
-  setDarkMode: (status: boolean) => void;
-}) {
+function Signup(props: { darkMode: boolean }) {
   const navigate = useNavigate();
 
   const {
