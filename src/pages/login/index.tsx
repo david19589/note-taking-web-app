@@ -180,7 +180,7 @@ function Login(props: { darkMode: boolean }) {
                 >
                   Password
                 </h2>
-                <Link to="/forgot-password">
+                <Link className="flex" to="/forgot-password">
                   <button
                     type="button"
                     className={clsx(
