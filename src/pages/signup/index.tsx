@@ -27,8 +27,7 @@ const schema: ZodType<FormData> = z.object({
   email: z
     .string()
     .nonempty({ message: "Can't be empty" })
-    .email({ message: "Please enter a valid email address." })
-    .max(70, { message: "max 70 characters." }),
+    .email({ message: "Please enter a valid email address." }),
   password: z
     .string()
     .nonempty({ message: "Can't be empty" })
@@ -51,7 +50,7 @@ function Signup(props: { darkMode: boolean }) {
         userPassword: data.password,
       });
 
-      navigate("/login");
+      navigate("/auth/login");
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 400) {
@@ -127,10 +126,9 @@ function Signup(props: { darkMode: boolean }) {
                 id="email-register"
                 autoComplete="email-register"
                 placeholder="email@example.com"
-                maxLength={70}
                 className={clsx(
                   errors.email
-                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939]"
+                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
                     : props.darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
@@ -166,10 +164,9 @@ function Signup(props: { darkMode: boolean }) {
                 {...register("password")}
                 type={showPassword ? "tel" : "password"}
                 id="password-register"
-                maxLength={60}
                 className={clsx(
                   errors.password
-                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939]"
+                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
                     : props.darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
@@ -290,7 +287,7 @@ function Signup(props: { darkMode: boolean }) {
                 >
                   Already have an account?
                 </h3>
-                <Link to="/login" className="flex">
+                <Link to="/auth/login" className="flex">
                   <button
                     type="button"
                     className={clsx(

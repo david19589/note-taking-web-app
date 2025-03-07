@@ -63,7 +63,6 @@ function Login(props: { darkMode: boolean }) {
       }
     } catch (err) {
       console.error("Error logging in:", err);
-      setTimeout(setServerError, 2000);
 
       if (err instanceof AxiosError) {
         if (err.response && err.response.data) {
@@ -78,6 +77,7 @@ function Login(props: { darkMode: boolean }) {
         setServerError("Something went wrong. Please try again.");
       }
     } finally {
+      setTimeout(() => setServerError(null), 2000);
       setTimeout(() => {
         setIsSubmitting(false);
       }, 2000);
@@ -144,10 +144,9 @@ function Login(props: { darkMode: boolean }) {
                 id="email-register"
                 autoComplete="email-register"
                 placeholder="email@example.com"
-                maxLength={70}
                 className={clsx(
                   errors.email
-                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939]"
+                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
                     : props.darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
@@ -165,7 +164,7 @@ function Login(props: { darkMode: boolean }) {
                   alt="redInfoSvg"
                   className="w-[0.75rem] select-none"
                 />
-                <span className="text-[0.7rem] leading-[1rem] font-[400] text-[#FF3939] ">
+                <span className="text-[0.7rem] leading-[1rem] font-[400] text-[#FF3939]">
                   {errors.email?.message}
                 </span>
               </div>
@@ -180,7 +179,7 @@ function Login(props: { darkMode: boolean }) {
                 >
                   Password
                 </h2>
-                <Link className="flex" to="/forgot-password">
+                <Link className="flex" to="/auth/forgot-password">
                   <button
                     type="button"
                     className={clsx(
@@ -196,10 +195,10 @@ function Login(props: { darkMode: boolean }) {
                 {...register("password")}
                 type={showPassword ? "tel" : "password"}
                 id="password-register"
-                maxLength={60}
+                autoComplete="current-password"
                 className={clsx(
                   errors.password
-                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939]"
+                    ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
                     : props.darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
@@ -305,7 +304,7 @@ function Login(props: { darkMode: boolean }) {
                 >
                   No account yet?
                 </h3>
-                <Link to="/signup" className="flex">
+                <Link to="/auth/signup" className="flex">
                   <button
                     type="button"
                     className={clsx(

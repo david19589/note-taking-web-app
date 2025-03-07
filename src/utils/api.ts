@@ -19,8 +19,10 @@ type HttpMethod = "get" | "post" | "put" | "delete";
 
 const apiUrl = {
   notes: "http://localhost:5000/api/notes",
-  register: "http://localhost:5000/api/register",
-  login: "http://localhost:5000/api/login",
+  register: "http://localhost:5000/api/auth/register",
+  login: "http://localhost:5000/api/auth/login",
+  forgotPassword: "http://localhost:5000/api/auth/forgot-password",
+  resetPassword: "http://localhost:5000/api/auth/reset-password",
 };
 
 const handleRequest = async <T>(
@@ -54,3 +56,7 @@ export const createUser = (data: userDataTypes) =>
   handleRequest("register", "post", "", data);
 export const login = (data: userDataTypes) =>
   handleRequest("login", "post", "", data);
+export const forgotPassword = (userEmail: string) =>
+  handleRequest("forgotPassword", "post", "", { userEmail });
+export const resetPassword = (resetPasswordToken: string, userPassword: string) =>
+  handleRequest("resetPassword", "post", "", { resetPasswordToken, userPassword });
