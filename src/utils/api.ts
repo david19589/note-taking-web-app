@@ -21,6 +21,7 @@ const apiUrl = {
   notes: "http://localhost:5000/api/notes",
   register: "http://localhost:5000/api/auth/register",
   login: "http://localhost:5000/api/auth/login",
+  googleAuth: "http://localhost:5000/api/auth/google-auth",
   forgotPassword: "http://localhost:5000/api/auth/forgot-password",
   resetPassword: "http://localhost:5000/api/auth/reset-password",
 };
@@ -37,7 +38,7 @@ const handleRequest = async <T>(
       url: `${apiUrl[resource]}${endpoint}`,
       data,
     });
-    return response.data;
+    return { status: response.status, data: response.data };
   } catch (err) {
     console.error(`Error with ${method.toUpperCase()} request:`, err);
     throw err;
@@ -56,7 +57,15 @@ export const createUser = (data: userDataTypes) =>
   handleRequest("register", "post", "", data);
 export const login = (data: userDataTypes) =>
   handleRequest("login", "post", "", data);
+export const googleAuth = (userEmail: string) =>
+  handleRequest("googleAuth", "post", "", { userEmail });
 export const forgotPassword = (userEmail: string) =>
   handleRequest("forgotPassword", "post", "", { userEmail });
-export const resetPassword = (resetPasswordToken: string, userPassword: string) =>
-  handleRequest("resetPassword", "post", "", { resetPasswordToken, userPassword });
+export const resetPassword = (
+  resetPasswordToken: string,
+  userPassword: string
+) =>
+  handleRequest("resetPassword", "post", "", {
+    resetPasswordToken,
+    userPassword,
+  });

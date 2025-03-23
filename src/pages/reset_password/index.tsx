@@ -76,11 +76,11 @@ function ResetPassword(props: {
     try {
       const result = await resetPassword(token, data.password);
 
-      if (result) {
+      if (result.status === 200) {
         setServerError("Password reset successful.");
       } else {
         setServerError(
-          result.message || "Something went wrong. Please try again."
+          result.data?.message || "Something went wrong. Please try again."
         );
       }
 

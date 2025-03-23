@@ -42,11 +42,11 @@ function ForgotPassword(props: {
     try {
       const result = await forgotPassword(data.email);
 
-      if (result) {
+      if (result.status === 200) {
         setServerError("link sent successfully. Check your email.");
       } else {
         setServerError(
-          result?.message || "Something went wrong. Please try again."
+          result.data?.message || "Something went wrong. Please try again."
         );
       }
     } catch (err) {

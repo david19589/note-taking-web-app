@@ -1,4 +1,5 @@
 import ForgotPassword from "../pages/forgot_password";
+import GoogleAuthFail from "../pages/google_auth_fail";
 import Login from "../pages/login";
 import ResetPassword from "../pages/reset_password";
 import Signup from "../pages/signup";
@@ -22,6 +23,10 @@ const Routes = (props: {
   {
     path: "/auth/reset-password",
     element: <ResetPassword {...props} />,
+  },
+  {
+    path: "/auth/google-auth-fail",
+    element: <GoogleAuthFail {...props} />,
   },
 ];
 export default Routes;

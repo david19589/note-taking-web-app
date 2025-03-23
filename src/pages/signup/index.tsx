@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { createUser } from "../../utils/api";
 import { AxiosError } from "axios";
+import { authWithGoogle } from "../../utils/google_auth";
 
 type FormData = {
   email: string;
@@ -35,6 +36,8 @@ const schema: ZodType<FormData> = z.object({
 });
 
 function Signup(props: { darkMode: boolean }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const {
@@ -65,8 +68,6 @@ function Signup(props: { darkMode: boolean }) {
       }
     }
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div
@@ -257,6 +258,7 @@ function Signup(props: { darkMode: boolean }) {
                 </h2>
                 <button
                   type="button"
+                  onClick={authWithGoogle}
                   className={clsx(
                     props.darkMode
                       ? "text-[#FFFFFF] border-[#525866] hover:bg-[#232530]"

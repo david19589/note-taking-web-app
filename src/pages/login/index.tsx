@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router";
 import { login } from "../../utils/api";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
+import { authWithGoogle } from "../../utils/google_auth";
 
 type FormData = {
   email: string;
@@ -44,19 +45,17 @@ function Login(props: { darkMode: boolean }) {
 
   const onSubmit = async (data: FormData) => {
     if (isSubmitting) return;
-
     setIsSubmitting(true);
 
     try {
       setServerError(null);
-
       const response = await login({
         userEmail: data.email,
         userPassword: data.password,
       });
 
-      if (response.token) {
-        Cookies.set("authToken", response.token, { expires: 7 });
+      if (response.data?.token) {
+        Cookies.set("authToken", response.data?.token, { expires: 7 });
         Cookies.set("userEmail", data.email, { expires: 7 });
         console.log("Login successful, token stored in cookies.");
         navigate("/");
@@ -274,10 +273,11 @@ function Login(props: { darkMode: boolean }) {
                 </h2>
                 <button
                   type="button"
+                  onClick={authWithGoogle}
                   className={clsx(
                     props.darkMode
                       ? "text-[#FFFFFF] border-[#525866] hover:bg-[#232530]"
-                      : "text-[#0E121B] border-[#CACFD8] hover:bg-[#e0e4ea42]",
+                      : "text-[#172036] border-[#CACFD8] hover:bg-[#e0e4ea42]",
                     "flex items-center justify-center gap-[1rem] text-[1rem] leading-[1rem] tracking-[0.03125rem] font-[500] p-[0.85rem] rounded-xl border-[0.0625rem] cursor-pointer w-full outline-none transition-all duration-150"
                   )}
                 >
