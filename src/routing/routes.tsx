@@ -1,37 +1,39 @@
 import ForgotPassword from "../pages/forgot_password";
 import GoogleAuthFail from "../pages/google_auth_fail";
 import Login from "../pages/login";
-import Main from "../pages/main";
+import Main from "../pages/main/index.tsx";
+import NoteDetails from "../pages/note_details";
 import ResetPassword from "../pages/reset_password";
 import Signup from "../pages/signup";
 
-const Routes = (props: {
-  darkMode: boolean;
-  setDarkMode: (status: boolean) => void;
-}) => [
+const Routes = () => [
   {
     path: "/auth/signup",
-    element: <Signup {...props} />,
+    element: <Signup />,
   },
   {
     path: "/auth/login",
-    element: <Login {...props} />,
+    element: <Login />,
   },
   {
     path: "/auth/forgot-password",
-    element: <ForgotPassword {...props} />,
+    element: <ForgotPassword />,
   },
   {
     path: "/auth/reset-password",
-    element: <ResetPassword {...props} />,
+    element: <ResetPassword />,
   },
   {
     path: "/auth/google-auth-fail",
-    element: <GoogleAuthFail {...props} />,
+    element: <GoogleAuthFail />,
   },
   {
     path: "/",
-    element: <Main {...props} />,
+    element: <Main />,
+  },
+  {
+    path: "/note/:id",
+    element: <NoteDetails />,
   },
 ];
 export default Routes;

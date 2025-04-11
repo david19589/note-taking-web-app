@@ -10,8 +10,11 @@ import SearchSvgSelected from "../../assets/icons/search_svg_selected";
 import ArchiveSvgSelected from "../../assets/icons/archive_svg_selected";
 import TagSvgSelected from "../../assets/icons/tag_svg_selected";
 import SettingSvgSelected from "../../assets/icons/setting_svg_selected";
+import { useUIStore } from "../../stores/useUIStore";
 
-function Menu(props: { darkMode: boolean }) {
+function Menu() {
+  const { darkMode } = useUIStore();
+
   const defaultState = {
     home: true,
     search: false,
@@ -43,13 +46,13 @@ function Menu(props: { darkMode: boolean }) {
   return (
     <div
       className={clsx(
-        props.darkMode ? "bg-[#0E121B]" : "bg-[#FFF]",
+        darkMode ? "bg-[#0E121B]" : "bg-[#FFF]",
         "lg:hidden flex"
       )}
     >
       <div
         className={clsx(
-          props.darkMode
+          darkMode
             ? "bg-[#0E121B] border-[#232530]"
             : "bg-[#FFF] border-[#E0E4EA]",
           "flex justify-between px-[1rem] py-[0.75rem] w-full absolute bottom-0 border-t-[0.1rem] drop-shadow-lg"
@@ -61,10 +64,10 @@ function Menu(props: { darkMode: boolean }) {
           }}
           className={clsx(
             selected.home
-              ? props.darkMode
+              ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
-              : props.darkMode
+              : darkMode
               ? "hover:bg-[#bfc4d11e]"
               : "hover:bg-[#2b303b15]",
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
@@ -83,7 +86,7 @@ function Menu(props: { darkMode: boolean }) {
             className={clsx(
               selected.home
                 ? "text-[#335CFF]"
-                : props.darkMode
+                : darkMode
                 ? "text-[#99A0AE]"
                 : "text-[#717784]",
               "md:flex hidden text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
@@ -94,7 +97,7 @@ function Menu(props: { darkMode: boolean }) {
         </button>
         <span
           className={clsx(
-            props.darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
+            darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
             "md:flex hidden h-[3.45rem] w-[0.0625rem]"
           )}
         />
@@ -104,10 +107,10 @@ function Menu(props: { darkMode: boolean }) {
           }}
           className={clsx(
             selected.search
-              ? props.darkMode
+              ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
-              : props.darkMode
+              : darkMode
               ? "hover:bg-[#bfc4d11e]"
               : "hover:bg-[#2b303b15]",
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
@@ -126,7 +129,7 @@ function Menu(props: { darkMode: boolean }) {
             className={clsx(
               selected.search
                 ? "text-[#335CFF]"
-                : props.darkMode
+                : darkMode
                 ? "text-[#99A0AE]"
                 : "text-[#717784]",
               "md:flex hidden text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
@@ -137,7 +140,7 @@ function Menu(props: { darkMode: boolean }) {
         </button>
         <span
           className={clsx(
-            props.darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
+            darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
             "md:flex hidden h-[3.45rem] w-[0.0625rem]"
           )}
         />
@@ -147,10 +150,10 @@ function Menu(props: { darkMode: boolean }) {
           }}
           className={clsx(
             selected.archive
-              ? props.darkMode
+              ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
-              : props.darkMode
+              : darkMode
               ? "hover:bg-[#bfc4d11e]"
               : "hover:bg-[#2b303b15]",
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
@@ -169,7 +172,7 @@ function Menu(props: { darkMode: boolean }) {
             className={clsx(
               selected.archive
                 ? "text-[#335CFF]"
-                : props.darkMode
+                : darkMode
                 ? "text-[#99A0AE]"
                 : "text-[#717784]",
               "md:flex hidden text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
@@ -180,7 +183,7 @@ function Menu(props: { darkMode: boolean }) {
         </button>
         <span
           className={clsx(
-            props.darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
+            darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
             "md:flex hidden h-[3.45rem] w-[0.0625rem]"
           )}
         />
@@ -190,10 +193,10 @@ function Menu(props: { darkMode: boolean }) {
           }}
           className={clsx(
             selected.tags
-              ? props.darkMode
+              ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
-              : props.darkMode
+              : darkMode
               ? "hover:bg-[#bfc4d11e]"
               : "hover:bg-[#2b303b15]",
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
@@ -212,7 +215,7 @@ function Menu(props: { darkMode: boolean }) {
             className={clsx(
               selected.tags
                 ? "text-[#335CFF]"
-                : props.darkMode
+                : darkMode
                 ? "text-[#99A0AE]"
                 : "text-[#717784]",
               "md:flex hidden text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
@@ -223,7 +226,7 @@ function Menu(props: { darkMode: boolean }) {
         </button>
         <span
           className={clsx(
-            props.darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
+            darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
             "md:flex hidden h-[3.45rem] w-[0.0625rem]"
           )}
         />
@@ -233,10 +236,10 @@ function Menu(props: { darkMode: boolean }) {
           }}
           className={clsx(
             selected.settings
-              ? props.darkMode
+              ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
-              : props.darkMode
+              : darkMode
               ? "hover:bg-[#bfc4d11e]"
               : "hover:bg-[#2b303b15]",
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
@@ -255,7 +258,7 @@ function Menu(props: { darkMode: boolean }) {
             className={clsx(
               selected.settings
                 ? "text-[#335CFF]"
-                : props.darkMode
+                : darkMode
                 ? "text-[#99A0AE]"
                 : "text-[#717784]",
               "md:flex hidden text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"

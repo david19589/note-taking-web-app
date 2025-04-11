@@ -1,11 +1,14 @@
 import clsx from "clsx";
 import { Link } from "react-router";
+import { useUIStore } from "../../stores/useUIStore";
 
-const GoogleAuthFail = (props: { darkMode: boolean }) => {
+const GoogleAuthFail = () => {
+  const { darkMode } = useUIStore();
+
   return (
     <div
       className={clsx(
-        props.darkMode ? "bg-[#2B303B]" : "bg-[#F3F5F8]",
+        darkMode ? "bg-[#2B303B]" : "bg-[#F3F5F8]",
         "flex flex-col items-center justify-center px-[1rem] h-full w-full"
       )}
     >

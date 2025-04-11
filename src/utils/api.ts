@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export type noteDataTypes = {
+  _id: string;
   title: string;
   tags: [string];
   content: string;

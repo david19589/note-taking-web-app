@@ -1,17 +1,18 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import routes from "./routing/routes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useNotesStore } from "./stores/useNotesStore";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(
-    () => localStorage.getItem("darkMode") === "true"
-  );
+  const { loading, fetchNotes } = useNotesStore();
 
   useEffect(() => {
-    localStorage.setItem("darkMode", darkMode.toString());
-  }, [darkMode]);
+    fetchNotes();
+  }, [fetchNotes]);
 
-  const router = createBrowserRouter(routes({ darkMode, setDarkMode }));
+  if (loading) return <div>Loading...</div>;
+
+  const router = createBrowserRouter(routes());
 
   return <RouterProvider router={router} />;
 }

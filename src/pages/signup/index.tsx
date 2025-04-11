@@ -18,6 +18,7 @@ import { Link, useNavigate } from "react-router";
 import { createUser } from "../../utils/api";
 import { AxiosError } from "axios";
 import { authWithGoogle } from "../../utils/google_auth";
+import { useUIStore } from "../../stores/useUIStore";
 
 type FormData = {
   email: string;
@@ -35,8 +36,9 @@ const schema: ZodType<FormData> = z.object({
     .min(8, { message: "must contain at least 8 characters" }),
 });
 
-function Signup(props: { darkMode: boolean }) {
+function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const { darkMode } = useUIStore();
 
   const navigate = useNavigate();
 
@@ -72,13 +74,13 @@ function Signup(props: { darkMode: boolean }) {
   return (
     <div
       className={clsx(
-        props.darkMode ? "bg-[#2B303B]" : "bg-[#F3F5F8]",
+        darkMode ? "bg-[#2B303B]" : "bg-[#F3F5F8]",
         "flex items-center justify-center px-[1rem] h-full w-full"
       )}
     >
       <div
         className={clsx(
-          props.darkMode
+          darkMode
             ? "bg-[#0E121B] border-[#232530]"
             : "bg-[#FFF] border-[#E0E4EA]",
           "lg:max-w-[33.75rem] md:max-w-[32.625rem] flex flex-col items-center border-[0.0625rem] px-[1rem] py-[3rem] rounded-2xl shadow-sm max-w-[21.5rem] w-full"
@@ -86,13 +88,13 @@ function Signup(props: { darkMode: boolean }) {
       >
         <div className="flex flex-col items-center mb-[2.5rem]">
           <img
-            src={props.darkMode ? whiteLogoSvg : logoSvg}
+            src={darkMode ? whiteLogoSvg : logoSvg}
             alt="logoSvg"
             className="mb-[1.5rem] select-none"
           />
           <h1
             className={clsx(
-              props.darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+              darkMode ? "text-[#FFF]" : "text-[#0E121B]",
               "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[0.5rem] text-center"
             )}
           >
@@ -100,7 +102,7 @@ function Signup(props: { darkMode: boolean }) {
           </h1>
           <p
             className={clsx(
-              props.darkMode ? "text-[#CACFD8]" : "text-[#525866]",
+              darkMode ? "text-[#CACFD8]" : "text-[#525866]",
               "text-[0.9375rem] leading-[1.15rem] tracking-[-0.0125rem] font-[400] text-center max-w-[21rem]"
             )}
           >
@@ -115,7 +117,7 @@ function Signup(props: { darkMode: boolean }) {
             <div className="flex flex-col gap-[0.375rem]">
               <h2
                 className={clsx(
-                  props.darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+                  darkMode ? "text-[#FFF]" : "text-[#0E121B]",
                   "text-[0.875rem] leading-[1.05rem] tracking-[-0.0125rem] font-[500]"
                 )}
               >
@@ -130,7 +132,7 @@ function Signup(props: { darkMode: boolean }) {
                 className={clsx(
                   errors.email
                     ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
-                    : props.darkMode
+                    : darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
                   "text-[0.875rem] leading-[1.15rem] tracking-[-0.0125rem] font-[400] border-[0.0625rem] w-full rounded-lg px-[1rem] py-[0.75rem] transition-all duration-150 focus:outline-1 focus:outline-offset-2"
@@ -155,7 +157,7 @@ function Signup(props: { darkMode: boolean }) {
             <div className="flex flex-col gap-[0.375rem] w-full relative">
               <h2
                 className={clsx(
-                  props.darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+                  darkMode ? "text-[#FFF]" : "text-[#0E121B]",
                   "text-[0.875rem] leading-[1.05rem] tracking-[-0.0125rem] font-[500]"
                 )}
               >
@@ -168,7 +170,7 @@ function Signup(props: { darkMode: boolean }) {
                 className={clsx(
                   errors.password
                     ? "border-[#FF3939] focus:outline-[#FF3939] focus:border-[#FF3939] text-[#717784]"
-                    : props.darkMode
+                    : darkMode
                     ? "border-[#525866] focus:outline-[#525866] focus:border-[#525866] hover:bg-[#232530] focus:bg-[#0E121B] text-[#717784]"
                     : "border-[#D9D9D9] focus:outline-[#0E121B] focus:border-[#0E121B] hover:bg-[#F5F7FA] focus:bg-[#FFF] text-[#0E121B]",
                   "text-[0.875rem] leading-[1.15rem] tracking-[-0.0125rem] font-[400] border-[0.0625rem] w-full rounded-lg px-[1rem] py-[0.75rem] pr-[4rem] transition-all duration-150 focus:outline-1 focus:outline-offset-2"
@@ -184,7 +186,7 @@ function Signup(props: { darkMode: boolean }) {
                 >
                   <img
                     className="w-[1.25rem]"
-                    src={props.darkMode ? whiteHidePassSvg : hidePassSvg}
+                    src={darkMode ? whiteHidePassSvg : hidePassSvg}
                     alt="hidePassSvg"
                   />
                 </button>
@@ -205,13 +207,13 @@ function Signup(props: { darkMode: boolean }) {
               )}
               <div className="flex gap-[0.5rem]">
                 <img
-                  src={props.darkMode ? whiteInfoSvg : infoSvg}
+                  src={darkMode ? whiteInfoSvg : infoSvg}
                   alt="infoSvg"
                   className="w-[0.75rem] select-none"
                 />
                 <h3
                   className={clsx(
-                    props.darkMode ? "text-[#99A0AE]" : "text-[#525866]",
+                    darkMode ? "text-[#99A0AE]" : "text-[#525866]",
                     "text-[0.75rem] leading-[1rem] fon-[400]"
                   )}
                 >
@@ -243,14 +245,14 @@ function Signup(props: { darkMode: boolean }) {
             <div className="flex flex-col gap-[1rem]">
               <span
                 className={clsx(
-                  props.darkMode ? "bg-[#474a5a]" : "bg-[#E0E4EA]",
+                  darkMode ? "bg-[#474a5a]" : "bg-[#E0E4EA]",
                   "flex w-full h-[0.0625rem] mb-[1.5rem]"
                 )}
               />
               <div className="flex flex-col items-center gap-[1rem]">
                 <h2
                   className={clsx(
-                    props.darkMode ? "text-[#CACFD8]" : "text-[#525866]",
+                    darkMode ? "text-[#CACFD8]" : "text-[#525866]",
                     "text-[0.875rem] leading-[1.125rem] tracking-[-0.0125rem] font-[400]"
                   )}
                 >
@@ -260,14 +262,14 @@ function Signup(props: { darkMode: boolean }) {
                   type="button"
                   onClick={authWithGoogle}
                   className={clsx(
-                    props.darkMode
+                    darkMode
                       ? "text-[#FFFFFF] border-[#525866] hover:bg-[#232530]"
                       : "text-[#0E121B] border-[#CACFD8] hover:bg-[#e0e4ea42]",
                     "flex items-center justify-center gap-[1rem] text-[1rem] leading-[1rem] tracking-[0.03125rem] font-[500] p-[0.85rem] rounded-xl border-[0.0625rem] cursor-pointer w-full outline-none transition-all duration-150"
                   )}
                 >
                   <img
-                    src={props.darkMode ? WhiteGoogleSvg : googleSvg}
+                    src={darkMode ? WhiteGoogleSvg : googleSvg}
                     alt="googleSvg"
                     className="select-none"
                   />
@@ -276,14 +278,14 @@ function Signup(props: { darkMode: boolean }) {
               </div>
               <span
                 className={clsx(
-                  props.darkMode ? "bg-[#474a5a]" : "bg-[#E0E4EA]",
+                  darkMode ? "bg-[#474a5a]" : "bg-[#E0E4EA]",
                   "flex w-full h-[0.0625rem] mb-[1.5rem]"
                 )}
               />
               <div className="flex justify-center items-center gap-[0.2rem]">
                 <h3
                   className={clsx(
-                    props.darkMode ? "text-[#CACFD8]" : "text-[#525866]",
+                    darkMode ? "text-[#CACFD8]" : "text-[#525866]",
                     "text-[0.875rem] leading-[1.125rem] tracking-[-0.0125rem] font-[400]"
                   )}
                 >
@@ -293,7 +295,7 @@ function Signup(props: { darkMode: boolean }) {
                   <button
                     type="button"
                     className={clsx(
-                      props.darkMode ? "text-[#FFF]" : "text-[#0a1f50]",
+                      darkMode ? "text-[#FFF]" : "text-[#0a1f50]",
                       "text-[0.875rem] leading-[1.125rem] tracking-[-0.0125rem] font-[400] cursor-pointer outline-none hover:text-[#708ccf] transition-all duration-150"
                     )}
                   >
