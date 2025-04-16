@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import routes from "./routing/routes";
 import { useEffect } from "react";
 import { useNotesStore } from "./stores/useNotesStore";

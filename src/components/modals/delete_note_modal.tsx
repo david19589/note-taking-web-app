@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Modal from ".";
 import deleteSvg from "../../assets/icon-delete.svg";
 import { deleteNote, noteDataTypes } from "../../utils/api";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useNotesStore } from "../../stores/useNotesStore";
 import { useUIStore } from "../../stores/useUIStore";
 import DeleteSvgDetailsDarkMode from "../../assets/icons/delete_svg_details_dark_mode";

@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import { useNotesStore } from "../../stores/useNotesStore";
 import { useUIStore } from "../../stores/useUIStore";
 
-function Main() {
+function ArchivedNotes() {
   const { notes } = useNotesStore();
   const { darkMode } = useUIStore();
 
-  const filterArchived = notes.filter((note) => note.isArchived === false);
+  const filterArchived = notes.filter((note) => note.isArchived === true);
 
   return (
     <div className={clsx(darkMode ? "bg-[#0E121B]" : "bg-[#FFF]", "h-full")}>
@@ -19,11 +19,20 @@ function Main() {
         <h1
           className={clsx(
             darkMode ? "text-[#FFF]" : "text-[#0E121B]",
-            "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[1rem]"
+            "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[0.5rem]"
           )}
         >
-          ALL NOTES
+          Archived Notes
         </h1>
+        <p
+          className={clsx(
+            darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] mb-[1rem]"
+          )}
+        >
+          All your archived notes are stored here. You can restore or delete
+          them anytime.
+        </p>
         {filterArchived.map((note, index) => (
           <Link
             to={`/note/${note._id}`}
@@ -76,7 +85,7 @@ function Main() {
                 darkMode
                   ? "bg-[#232530] border-[#2B303B]"
                   : "bg-[#F3F5F8] border-[#E0E4EA]",
-                "w-full p-[0.75rem] border-[0.0625rem] rounded-lg"
+                "flex gap-[0.25rem] w-full p-[0.75rem] border-[0.0625rem] rounded-lg"
               )}
             >
               <p
@@ -85,8 +94,16 @@ function Main() {
                   "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
                 )}
               >
-                You don`t have any notes yet. Start a new note to capture your
-                thoughts and ideas.
+                No notes have been archived yet. Move notes here for
+                safekeeping, or
+              </p>
+              <p
+                className={clsx(
+                  darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+                  "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] underline cursor-pointer"
+                )}
+              >
+                create a new note.
               </p>
             </div>
             <span
@@ -105,4 +122,4 @@ function Main() {
     </div>
   );
 }
-export default Main;
+export default ArchivedNotes;

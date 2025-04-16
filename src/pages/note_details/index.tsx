@@ -12,14 +12,15 @@ import DeleteSvgDetailsDarkMode from "../../assets/icons/delete_svg_details_dark
 import ArchiveSvgDetailsDarkMode from "../../assets/icons/archive_svg_details_dark_mode";
 import ArrowLeftDetailsDarkMode from "../../assets/icons/arrow_left_details_dark_mode";
 import { noteDataTypes, updateNote } from "../../utils/api";
-import { Link, useParams } from "react-router";
-import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import DeleteNoteModal from "../../components/modals/delete_note_modal";
 import { useNotesStore } from "../../stores/useNotesStore";
 import { useUIStore } from "../../stores/useUIStore";
 
 function NoteDetails() {
-  const { setOpenDeleteModal, notes, updateNoteInStore } = useNotesStore();
+  const { setOpenDeleteModal, notes, updateNoteInStore, fetchNotes } =
+    useNotesStore();
   const { darkMode } = useUIStore();
 
   const { id } = useParams<{ id: string }>();
@@ -27,15 +28,48 @@ function NoteDetails() {
 
   const [title, setTitle] = useState(selectedNote?.title || "");
   const [content, setContent] = useState(selectedNote?.content || "");
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState("");
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [initialTags, setInitialTags] = useState<string[]>([]);
+
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (selectedNote?.tags) {
+      setTags(selectedNote.tags);
+      setInitialTags(selectedNote.tags);
+    }
+  }, [selectedNote]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpenDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleDropdown = () => {
+    setOpenDropdown((prev) => !prev);
+  };
 
   if (!selectedNote) return;
-  
+
   const updateSelectedNote = async (data: noteDataTypes) => {
     try {
       const updatedData = {
         ...data,
         title,
         content,
+        tags,
         lastEdited: new Date(),
       };
 
@@ -44,6 +78,36 @@ function NoteDetails() {
     } catch (err) {
       console.error("note update failed", err);
     }
+  };
+
+  const handleArchiveNote = async (data: noteDataTypes) => {
+    const newArchiveState = !selectedNote.isArchived;
+
+    try {
+      await updateNote(selectedNote._id, {
+        ...data,
+        isArchived: newArchiveState,
+      });
+    } catch (err) {
+      console.error(
+        newArchiveState ? "archiving note failed" : "unArchiving note failed",
+        err
+      );
+    }
+    fetchNotes();
+  };
+
+  const handleAddTag = () => {
+    if (newTag.trim() && !tags.includes(newTag.trim())) {
+      setTags([...tags, newTag.trim()]);
+      setNewTag("");
+    }
+  };
+
+  const handleCancelEdited = () => {
+    setTitle(selectedNote.title);
+    setContent(selectedNote.content);
+    setTags(initialTags);
   };
 
   return (
@@ -85,7 +149,10 @@ function NoteDetails() {
                 <img src={deleteSvg} alt="deleteSvg" className="select-none" />
               )}
             </button>
-            <button className="cursor-pointer outline-none">
+            <button
+              onClick={() => handleArchiveNote(selectedNote)}
+              className="cursor-pointer outline-none"
+            >
               {darkMode ? (
                 <ArchiveSvgDetailsDarkMode />
               ) : (
@@ -97,7 +164,7 @@ function NoteDetails() {
               )}
             </button>
             <button
-              onClick={() => setContent(selectedNote.content)}
+              onClick={handleCancelEdited}
               className={clsx(
                 darkMode
                   ? "text-[#CACFD8] hover:text-[#cacacabb]"
@@ -125,6 +192,7 @@ function NoteDetails() {
       <div className="mt-[1.25rem] px-[1rem]">
         <textarea
           value={title}
+          id="title"
           onChange={(e) => setTitle(e.target.value)}
           className={clsx(
             darkMode ? "text-[#FFF]" : "text-[#0E121B]",
@@ -146,15 +214,129 @@ function NoteDetails() {
                 Tags
               </h3>
             </div>
-            <div className="flex">
-              {selectedNote.tags.map((tag, index) => (
-                <h3 key={index}>
-                  {tag}
-                  {index < selectedNote.tags.length - 1 && ","}
-                </h3>
-              ))}
+            <div ref={dropdownRef} className="flex gap-[1rem]">
+              <div className="md:max-w-[20rem] flex max-w-[8rem] overflow-x-scroll custom-scrollbar">
+                {selectedNote.tags.map((tag, index) => (
+                  <h3
+                    key={index}
+                    className={clsx(
+                      darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                      "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                    )}
+                  >
+                    {tag}
+                    {index < selectedNote.tags.length - 1 && ","}
+                  </h3>
+                ))}
+              </div>
+              {openDropdown && (
+                <div
+                  className={clsx(
+                    darkMode
+                      ? "bg-[#232530] border-[#2B303B]"
+                      : "bg-[#F3F5F8] border-[#E0E4EA]",
+                    "md:translate-x-[7rem] flex flex-col gap-[0.25rem] absolute translate-x-[1rem] translate-y-[1.5rem] px-[0.5rem] py-[0.25rem] border-[0.0625rem] rounded-lg"
+                  )}
+                >
+                  <div className=" max-h-[5rem] overflow-y-scroll custom-scrollbar">
+                    {tags.map((tag, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-[0.75rem]"
+                      >
+                        <h3
+                          className={clsx(
+                            darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                          )}
+                        >
+                          {tag}
+                        </h3>
+                        <button
+                          onClick={() => {
+                            setTags((prev) =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                          className={clsx(
+                            darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[700] cursor-pointer outline-none"
+                          )}
+                        >
+                          x
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex mt-[1rem]">
+                    <input
+                      type="text"
+                      value={newTag}
+                      onChange={(e) => setNewTag(e.target.value)}
+                      placeholder="Add tag"
+                      className={clsx(
+                        darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                        "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400] w-[4rem] outline-none"
+                      )}
+                    />
+                    <button
+                      onClick={handleAddTag}
+                      className={clsx(
+                        darkMode
+                          ? "text-[#CACFD8]"
+                          : "text-[#2B303B] bg-[#FFF] border-[0.0625rem] border-[#E0E4EA]",
+                        "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400] p-[0.15rem] rounded-md cursor-pointer outline-none"
+                      )}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={toggleDropdown}
+                className="cursor-pointer outline-none"
+              >
+                <img
+                  src={arrowLeftSvg}
+                  alt="arrowLeftSvg"
+                  className={clsx(
+                    openDropdown ? "rotate-270" : "rotate-90",
+                    "transition-all duration-200"
+                  )}
+                />
+              </button>
             </div>
           </div>
+          {selectedNote.isArchived === true && (
+            <div className="flex items-center gap-[4.375rem]">
+              <div className="flex items-center gap-[0.375rem]">
+                {darkMode ? (
+                  <ClockSvgDetailsDarkMode />
+                ) : (
+                  <img src={clockSvg} alt="clockSvg" className="select-none" />
+                )}
+                <h3
+                  className={clsx(
+                    darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                  )}
+                >
+                  Status
+                </h3>
+              </div>
+              <div>
+                <h3
+                  className={clsx(
+                    darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                  )}
+                >
+                  Archived
+                </h3>
+              </div>
+            </div>
+          )}
           <div className="flex items-center gap-[2.5rem]">
             <div className="flex items-center gap-[0.375rem]">
               {darkMode ? (
@@ -172,7 +354,14 @@ function NoteDetails() {
               </h3>
             </div>
             <div>
-              <h3> {new Date(selectedNote.lastEdited).toDateString()}</h3>
+              <h3
+                className={clsx(
+                  darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                  "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                )}
+              >
+                {new Date(selectedNote.lastEdited).toDateString()}
+              </h3>
             </div>
           </div>
         </div>
@@ -184,6 +373,7 @@ function NoteDetails() {
         />
         <textarea
           value={content}
+          id="content"
           onChange={(e) => setContent(e.target.value)}
           className={clsx(
             darkMode ? "text-[#CACFD8]" : "text-[#232530]",

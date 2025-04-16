@@ -4,44 +4,20 @@ import searchSvg from "../../assets/icon-search.svg";
 import archiveSvg from "../../assets/icon-archive.svg";
 import tagsSvg from "../../assets/icon-tag.svg";
 import settingsSvg from "../../assets/icon-settings.svg";
-import { useEffect, useState } from "react";
 import HomeSvgSelected from "../../assets/icons/home_svg_selected";
 import SearchSvgSelected from "../../assets/icons/search_svg_selected";
 import ArchiveSvgSelected from "../../assets/icons/archive_svg_selected";
 import TagSvgSelected from "../../assets/icons/tag_svg_selected";
 import SettingSvgSelected from "../../assets/icons/setting_svg_selected";
 import { useUIStore } from "../../stores/useUIStore";
+import { useNavigate } from "react-router-dom";
+import { useNotesStore } from "../../stores/useNotesStore";
 
 function Menu() {
   const { darkMode } = useUIStore();
+  const { selectedOption, handleSelectedOption } = useNotesStore();
 
-  const defaultState = {
-    home: true,
-    search: false,
-    archive: false,
-    tags: false,
-    settings: false,
-  };
-
-  const [selected, setSelected] = useState(() => {
-    const stored = localStorage.getItem("selectedMenu");
-    return stored ? JSON.parse(stored) : defaultState;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("selectedMenu", JSON.stringify(selected));
-  }, [selected]);
-
-  const handleSelect = (menu: keyof typeof selected) => {
-    setSelected({
-      home: false,
-      search: false,
-      archive: false,
-      tags: false,
-      settings: false,
-      [menu]: true,
-    });
-  };
+  const navigate = useNavigate();
 
   return (
     <div
@@ -60,10 +36,11 @@ function Menu() {
       >
         <button
           onClick={() => {
-            handleSelect("home");
+            handleSelectedOption("home");
+            navigate("/");
           }}
           className={clsx(
-            selected.home
+            selectedOption.home
               ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
@@ -73,7 +50,7 @@ function Menu() {
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
           )}
         >
-          {selected.home ? (
+          {selectedOption.home ? (
             <HomeSvgSelected />
           ) : (
             <img
@@ -84,7 +61,7 @@ function Menu() {
           )}
           <h3
             className={clsx(
-              selected.home
+              selectedOption.home
                 ? "text-[#335CFF]"
                 : darkMode
                 ? "text-[#99A0AE]"
@@ -103,10 +80,11 @@ function Menu() {
         />
         <button
           onClick={() => {
-            handleSelect("search");
+            handleSelectedOption("search");
+            navigate("/search");
           }}
           className={clsx(
-            selected.search
+            selectedOption.search
               ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
@@ -116,7 +94,7 @@ function Menu() {
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
           )}
         >
-          {selected.search ? (
+          {selectedOption.search ? (
             <SearchSvgSelected />
           ) : (
             <img
@@ -127,7 +105,7 @@ function Menu() {
           )}
           <h3
             className={clsx(
-              selected.search
+              selectedOption.search
                 ? "text-[#335CFF]"
                 : darkMode
                 ? "text-[#99A0AE]"
@@ -146,10 +124,11 @@ function Menu() {
         />
         <button
           onClick={() => {
-            handleSelect("archive");
+            handleSelectedOption("archive");
+            navigate("/archived-notes");
           }}
           className={clsx(
-            selected.archive
+            selectedOption.archive
               ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
@@ -159,7 +138,7 @@ function Menu() {
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
           )}
         >
-          {selected.archive ? (
+          {selectedOption.archive ? (
             <ArchiveSvgSelected />
           ) : (
             <img
@@ -170,7 +149,7 @@ function Menu() {
           )}
           <h3
             className={clsx(
-              selected.archive
+              selectedOption.archive
                 ? "text-[#335CFF]"
                 : darkMode
                 ? "text-[#99A0AE]"
@@ -189,10 +168,11 @@ function Menu() {
         />
         <button
           onClick={() => {
-            handleSelect("tags");
+            handleSelectedOption("tags");
+            navigate("/tags");
           }}
           className={clsx(
-            selected.tags
+            selectedOption.tags
               ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
@@ -202,7 +182,7 @@ function Menu() {
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
           )}
         >
-          {selected.tags ? (
+          {selectedOption.tags ? (
             <TagSvgSelected />
           ) : (
             <img
@@ -213,7 +193,7 @@ function Menu() {
           )}
           <h3
             className={clsx(
-              selected.tags
+              selectedOption.tags
                 ? "text-[#335CFF]"
                 : darkMode
                 ? "text-[#99A0AE]"
@@ -232,10 +212,11 @@ function Menu() {
         />
         <button
           onClick={() => {
-            handleSelect("settings");
+            handleSelectedOption("settings");
+            navigate("/settings");
           }}
           className={clsx(
-            selected.settings
+            selectedOption.settings
               ? darkMode
                 ? "bg-[#2B303B]"
                 : "bg-[#EBF1FF]"
@@ -245,7 +226,7 @@ function Menu() {
             "md:py-[0.35rem] md:px-[1.5rem] flex flex-col items-center px-[0.7rem] py-[0.75rem] rounded-md cursor-pointer"
           )}
         >
-          {selected.settings ? (
+          {selectedOption.settings ? (
             <SettingSvgSelected />
           ) : (
             <img
@@ -256,7 +237,7 @@ function Menu() {
           )}
           <h3
             className={clsx(
-              selected.settings
+              selectedOption.settings
                 ? "text-[#335CFF]"
                 : darkMode
                 ? "text-[#99A0AE]"

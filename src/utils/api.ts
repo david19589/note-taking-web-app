@@ -3,7 +3,7 @@ import axios from "axios";
 export type noteDataTypes = {
   _id: string;
   title: string;
-  tags: [string];
+  tags: string[];
   content: string;
   lastEdited: Date;
   isArchived: boolean;

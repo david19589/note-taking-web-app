@@ -17,3 +17,9 @@ body {
   margin: 0px;
   overflow-x: hidden;
 }
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  border-radius: 5px;
+  scrollbar-color: rgb(0, 0, 0, 0.103) transparent;
+}
