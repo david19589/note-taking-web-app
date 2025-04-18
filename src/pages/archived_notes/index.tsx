@@ -115,9 +115,15 @@ function ArchivedNotes() {
           </>
         )}
       </div>
-      <button className="bg-[#335CFF] p-[0.5rem] absolute bottom-[8rem] right-[1rem] z-20 rounded-full drop-shadow-md shadow-[#CACFD8B2] cursor-pointer">
-        <img src={plusSvg} alt="plusSvg" className="w-[2.25rem] select-none" />
-      </button>
+      <Link to="/add-note">
+        <button className="bg-[#335CFF] p-[0.5rem] absolute bottom-[8rem] right-[1rem] z-20 rounded-full drop-shadow-md shadow-[#CACFD8B2] cursor-pointer">
+          <img
+            src={plusSvg}
+            alt="plusSvg"
+            className="w-[2.25rem] select-none"
+          />
+        </button>
+      </Link>
       <Menu />
     </div>
   );

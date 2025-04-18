@@ -1,46 +1,34 @@
 import clsx from "clsx";
 import arrowLeftSvg from "../../assets/icon-arrow-left.svg";
-import deleteSvg from "../../assets/icon-delete.svg";
-import archiveSvg from "../../assets/icon-archive.svg";
 import clockSvg from "../../assets/icon-clock.svg";
 import Menu from "../../components/menu";
 import Header from "../../components/header";
 import TagSvgDetails from "../../assets/icons/tag_svg_details";
 import TagSvgDetailsDarkMode from "../../assets/icons/tag_svg_details_dark_mode";
 import ClockSvgDetailsDarkMode from "../../assets/icons/clock_svg_details_dark_mode";
-import DeleteSvgDetailsDarkMode from "../../assets/icons/delete_svg_details_dark_mode";
-import ArchiveSvgDetailsDarkMode from "../../assets/icons/archive_svg_details_dark_mode";
 import ArrowLeftDetailsDarkMode from "../../assets/icons/arrow_left_details_dark_mode";
-import { noteDataTypes, updateNote } from "../../utils/api";
-import { Link, useParams } from "react-router-dom";
+import redInfoSvg from "../../assets/icon-info-red-circle.svg";
+import { noteDataTypes, postNote } from "../../utils/api";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import DeleteNoteModal from "../../components/modals/delete_note_modal";
 import { useNotesStore } from "../../stores/useNotesStore";
 import { useUIStore } from "../../stores/useUIStore";
 
-function NoteDetails() {
-  const { setOpenDeleteModal, notes, updateNoteInStore, fetchNotes } =
-    useNotesStore();
+function AddNote() {
+  const { fetchNotes } = useNotesStore();
   const { darkMode } = useUIStore();
 
-  const { id } = useParams<{ id: string }>();
-  const selectedNote = notes.find((note) => note._id === id);
+  const navigate = useNavigate();
 
-  const [title, setTitle] = useState(selectedNote?.title || "");
-  const [content, setContent] = useState(selectedNote?.content || "");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [initialTags, setInitialTags] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (selectedNote?.tags) {
-      setTags(selectedNote.tags);
-      setInitialTags(selectedNote.tags);
-    }
-  }, [selectedNote]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -61,40 +49,41 @@ function NoteDetails() {
     setOpenDropdown((prev) => !prev);
   };
 
-  if (!selectedNote) return;
+  const handleAddNote = async (data: noteDataTypes) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-  const updateSelectedNote = async (data: noteDataTypes) => {
     try {
-      const updatedData = {
-        ...data,
-        title,
-        content,
-        tags,
-        lastEdited: new Date(),
-      };
+      if (title.trim() === "" || content.trim() === "") {
+        setError("Title and content are required.");
+        return;
+      }
 
-      await updateNote(selectedNote._id, updatedData);
-      updateNoteInStore(selectedNote._id, updatedData);
+      await postNote({
+        ...data,
+        lastEdited: new Date(),
+        isArchived: false,
+      });
+
+      navigate("/");
+      fetchNotes();
     } catch (err) {
-      console.error("note update failed", err);
+      console.error("error adding note", err);
+    } finally {
+      setTimeout(() => setError(null), 2000);
+      setTimeout(() => setIsSubmitting(false), 2000);
     }
   };
 
-  const handleArchiveNote = async (data: noteDataTypes) => {
-    const newArchiveState = !selectedNote.isArchived;
-
-    try {
-      await updateNote(selectedNote._id, {
-        ...data,
-        isArchived: newArchiveState,
-      });
-    } catch (err) {
-      console.error(
-        newArchiveState ? "archiving note failed" : "unArchiving note failed",
-        err
-      );
-    }
-    fetchNotes();
+  const handleSaveNote = () => {
+    handleAddNote({
+      title,
+      content,
+      tags,
+      lastEdited: new Date(),
+      isArchived: false,
+      _id: "",
+    });
   };
 
   const handleAddTag = () => {
@@ -105,9 +94,9 @@ function NoteDetails() {
   };
 
   const handleCancelEdited = () => {
-    setTitle(selectedNote.title);
-    setContent(selectedNote.content);
-    setTags(initialTags);
+    setTitle("");
+    setContent("");
+    setTags([]);
   };
 
   return (
@@ -140,30 +129,6 @@ function NoteDetails() {
           </Link>
           <div className="flex items-center gap-[1rem]">
             <button
-              onClick={() => setOpenDeleteModal(true)}
-              className="cursor-pointer outline-none"
-            >
-              {darkMode ? (
-                <DeleteSvgDetailsDarkMode />
-              ) : (
-                <img src={deleteSvg} alt="deleteSvg" className="select-none" />
-              )}
-            </button>
-            <button
-              onClick={() => handleArchiveNote(selectedNote)}
-              className="cursor-pointer outline-none"
-            >
-              {darkMode ? (
-                <ArchiveSvgDetailsDarkMode />
-              ) : (
-                <img
-                  src={archiveSvg}
-                  alt="archiveSvg"
-                  className="select-none"
-                />
-              )}
-            </button>
-            <button
               onClick={handleCancelEdited}
               className={clsx(
                 darkMode
@@ -175,7 +140,7 @@ function NoteDetails() {
               Cancel
             </button>
             <button
-              onClick={() => updateSelectedNote(selectedNote)}
+              onClick={handleSaveNote}
               className="text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] text-[#335CFF] hover:text-[#335cffb2] transition-all duration-150 cursor-pointer outline-none"
             >
               Save Note
@@ -193,14 +158,13 @@ function NoteDetails() {
         <textarea
           value={title}
           id="title"
+          placeholder="Enter a title…"
           onChange={(e) => setTitle(e.target.value)}
           className={clsx(
             darkMode ? "text-[#FFF]" : "text-[#0E121B]",
             "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[1rem] w-full resize-none cursor-text outline-none"
           )}
-        >
-          {selectedNote.title}
-        </textarea>
+        />
         <div className="flex flex-col gap-[0.75rem]">
           <div className="flex items-center gap-[5rem]">
             <div className="flex items-center gap-[0.375rem]">
@@ -215,20 +179,6 @@ function NoteDetails() {
               </h3>
             </div>
             <div ref={dropdownRef} className="flex gap-[1rem] relative">
-              <div className="md:max-w-[20rem] flex max-w-[8rem] overflow-x-scroll custom-scrollbar">
-                {selectedNote.tags.map((tag, index) => (
-                  <h3
-                    key={index}
-                    className={clsx(
-                      darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                      "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
-                    )}
-                  >
-                    {tag}
-                    {index < selectedNote.tags.length - 1 && ","}
-                  </h3>
-                ))}
-              </div>
               {openDropdown && (
                 <div
                   className={clsx(
@@ -247,7 +197,7 @@ function NoteDetails() {
                         <h3
                           className={clsx(
                             darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] max-w-[7rem] overflow-y-scroll custom-scrollbar"
+                            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
                           )}
                         >
                           {tag}
@@ -308,35 +258,6 @@ function NoteDetails() {
               </button>
             </div>
           </div>
-          {selectedNote.isArchived === true && (
-            <div className="flex items-center gap-[4.375rem]">
-              <div className="flex items-center gap-[0.375rem]">
-                {darkMode ? (
-                  <ClockSvgDetailsDarkMode />
-                ) : (
-                  <img src={clockSvg} alt="clockSvg" className="select-none" />
-                )}
-                <h3
-                  className={clsx(
-                    darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
-                  )}
-                >
-                  Status
-                </h3>
-              </div>
-              <div>
-                <h3
-                  className={clsx(
-                    darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
-                  )}
-                >
-                  Archived
-                </h3>
-              </div>
-            </div>
-          )}
           <div className="flex items-center gap-[2.5rem]">
             <div className="flex items-center gap-[0.375rem]">
               {darkMode ? (
@@ -356,11 +277,11 @@ function NoteDetails() {
             <div>
               <h3
                 className={clsx(
-                  darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                  darkMode ? "text-[#CACFD8]" : "text-[#99A0AE]",
                   "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
                 )}
               >
-                {new Date(selectedNote.lastEdited).toDateString()}
+                Not yet saved
               </h3>
             </div>
           </div>
@@ -374,18 +295,35 @@ function NoteDetails() {
         <textarea
           value={content}
           id="content"
+          placeholder="Start typing your note here…"
           onChange={(e) => setContent(e.target.value)}
           className={clsx(
             darkMode ? "text-[#CACFD8]" : "text-[#232530]",
             "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] w-full h-[25rem] resize-none mt-[0.75rem] transition-all duration-150 cursor-text outline-none"
           )}
+        />
+      </div>
+      <div className="w-full flex justify-center">
+        <div
+          className={clsx(
+            error
+              ? "top-[2rem] opacity-[100%]"
+              : "top-[-10rem] opacity-0 select-none",
+            "absolute transition-all duration-200 gap-[0.25rem] flex items-center bg-[#FFF] p-[0.75rem] rounded-md shadow-md"
+          )}
         >
-          {selectedNote.content}
-        </textarea>
+          <img
+            src={redInfoSvg}
+            alt="redInfoSvg"
+            className="w-[1.2rem] select-none"
+          />
+          <span className="text-[0.85rem] leading-[1rem] font-[500] text-[#000]">
+            {error}
+          </span>
+        </div>
       </div>
       <Menu />
-      <DeleteNoteModal selectedNote={selectedNote} />
     </div>
   );
 }
-export default NoteDetails;
+export default AddNote;

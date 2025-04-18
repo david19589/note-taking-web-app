@@ -7,8 +7,6 @@ export type noteDataTypes = {
   content: string;
   lastEdited: Date;
   isArchived: boolean;
-  userEmail: string;
-  userPassword: string;
 };
 
 export type userDataTypes = {

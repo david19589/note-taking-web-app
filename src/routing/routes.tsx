@@ -1,4 +1,5 @@
 import Layout from "../components/layout/index.tsx";
+import AddNote from "../pages/add_note/index.tsx";
 import ArchivedNotes from "../pages/archived_notes/index.tsx";
 import ForgotPassword from "../pages/forgot_password";
 import GoogleAuthFail from "../pages/google_auth_fail";
@@ -43,6 +44,10 @@ const Routes = () => [
       {
         path: "/archived-notes",
         element: <ArchivedNotes />,
+      },
+      {
+        path: "/add-note",
+        element: <AddNote />,
       },
     ],
   },
