@@ -1,16 +1,25 @@
 import clsx from "clsx";
 import plusSvg from "../../assets/icon-plus.svg";
+import searchSvg from "../../assets/icon-search.svg";
 import Menu from "../../components/menu";
 import Header from "../../components/header";
 import { Link } from "react-router-dom";
 import { useNotesStore } from "../../stores/useNotesStore";
 import { useUIStore } from "../../stores/useUIStore";
+import { useState } from "react";
 
-function ArchivedNotes() {
+function Search() {
   const { notes } = useNotesStore();
   const { darkMode } = useUIStore();
 
-  const filterArchived = notes.filter((note) => note.isArchived === true);
+  const [tag, setTag] = useState("");
+
+  const filteredNotes =
+    tag.trim() === ""
+      ? []
+      : notes.filter((note) =>
+          note.tags.some((t) => t.toLowerCase().includes(tag.toLowerCase()))
+        );
 
   return (
     <div className={clsx(darkMode ? "bg-[#0E121B]" : "bg-[#FFF]", "h-full")}>
@@ -19,21 +28,38 @@ function ArchivedNotes() {
         <h1
           className={clsx(
             darkMode ? "text-[#FFF]" : "text-[#0E121B]",
-            "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[0.5rem]"
+            "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[1rem]"
           )}
         >
-          Archived Notes
+          Search
         </h1>
-        <p
+        <div className="relative w-full">
+          <img
+            src={searchSvg}
+            alt="searchSvg"
+            className="absolute top-[0.75rem] left-[0.75rem]"
+          />
+          <input
+            type="text"
+            placeholder="Type here..."
+            onChange={(e) => setTag(e.target.value)}
+            className={clsx(
+              darkMode
+                ? "bg-[#232530] border-[#2B303B]"
+                : "bg-[#F3F5F8] border-[#E0E4EA]",
+              "p-[0.75rem] border-[0.0625rem] rounded-lg outline-none pl-[2.5rem] w-full"
+            )}
+          />
+        </div>
+        <h3
           className={clsx(
-            darkMode ? "text-[#FFF]" : "text-[#0E121B]",
-            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] mb-[1rem]"
+            darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+            "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] my-[1rem]"
           )}
         >
-          All your archived notes are stored here. You can restore or delete
-          them anytime.
-        </p>
-        {filterArchived.map((note, index) => (
+          All notes matching ”{tag}” are displayed below.
+        </h3>
+        {filteredNotes.map((note, index) => (
           <Link
             to={`/note/${note._id}`}
             key={index}
@@ -78,7 +104,7 @@ function ArchivedNotes() {
             />
           </Link>
         ))}
-        {filterArchived.length < 1 && (
+        {tag.trim() !== "" && filteredNotes.length < 1 && (
           <>
             <div
               className={clsx(
@@ -94,8 +120,7 @@ function ArchivedNotes() {
                   "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
                 )}
               >
-                No notes have been archived yet. Move notes here for
-                safekeeping, or
+                No notes match your search. Try a different keyword or
                 <Link
                   to="/add-note"
                   className="underline cursor-pointer pl-[0.35rem]"
@@ -126,4 +151,4 @@ function ArchivedNotes() {
     </div>
   );
 }
-export default ArchivedNotes;
+export default Search;

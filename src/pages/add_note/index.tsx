@@ -222,6 +222,11 @@ function AddNote() {
                     <input
                       type="text"
                       value={newTag}
+                      onKeyDown={(e) => {
+                        if (e.key === " ") {
+                          e.preventDefault();
+                        }
+                      }}
                       onChange={(e) => setNewTag(e.target.value)}
                       placeholder="Add tag"
                       className={clsx(

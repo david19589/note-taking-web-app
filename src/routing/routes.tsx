@@ -7,6 +7,7 @@ import Login from "../pages/login";
 import Main from "../pages/main/index.tsx";
 import NoteDetails from "../pages/note_details";
 import ResetPassword from "../pages/reset_password";
+import Search from "../pages/search/index.tsx";
 import Signup from "../pages/signup";
 
 const Routes = () => [
@@ -48,6 +49,10 @@ const Routes = () => [
       {
         path: "/add-note",
         element: <AddNote />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },
