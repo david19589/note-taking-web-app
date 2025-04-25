@@ -14,7 +14,7 @@ export const getSelectedOptionFromPath = (
   if (pathname === "/") options.home = true;
   else if (pathname === "/archived-notes") options.archive = true;
   else if (pathname === "/search") options.search = true;
-  else if (pathname === "/tags") options.tags = true;
+  else if (pathname.startsWith("/tags")) options.tags = true;
   else if (pathname === "/settings") options.settings = true;
 
   return options;

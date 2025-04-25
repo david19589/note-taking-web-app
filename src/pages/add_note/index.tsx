@@ -88,7 +88,10 @@ function AddNote() {
 
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()]);
+      setTags([
+        ...tags,
+        newTag.trim().charAt(0).toUpperCase() + newTag.slice(1).toLowerCase(),
+      ]);
       setNewTag("");
     }
   };

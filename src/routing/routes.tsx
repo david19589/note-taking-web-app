@@ -9,6 +9,8 @@ import NoteDetails from "../pages/note_details";
 import ResetPassword from "../pages/reset_password";
 import Search from "../pages/search/index.tsx";
 import Signup from "../pages/signup";
+import TagList from "../pages/tag_list/index.tsx";
+import TagSelected from "../pages/tag_selected/index.tsx";
 
 const Routes = () => [
   {
@@ -53,6 +55,14 @@ const Routes = () => [
       {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "/tags",
+        element: <TagList />,
+      },
+      {
+        path: "/tags/:tag",
+        element: <TagSelected />,
       },
     ],
   },
