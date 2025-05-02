@@ -8,6 +8,9 @@ import Main from "../pages/main/index.tsx";
 import NoteDetails from "../pages/note_details";
 import ResetPassword from "../pages/reset_password";
 import Search from "../pages/search/index.tsx";
+import Settings from "../pages/settings/index.tsx";
+import ChangeTheme from "../pages/settings_change_theme/index.tsx";
+import ChangeFont from "../pages/settings_change_font/index.tsx";
 import Signup from "../pages/signup";
 import TagList from "../pages/tag_list/index.tsx";
 import TagSelected from "../pages/tag_selected/index.tsx";
@@ -63,6 +66,18 @@ const Routes = () => [
       {
         path: "/tags/:tag",
         element: <TagSelected />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+      {
+        path: "/settings/change-theme",
+        element: <ChangeTheme />,
+      },
+      {
+        path: "/settings/change-font",
+        element: <ChangeFont />,
       },
     ],
   },

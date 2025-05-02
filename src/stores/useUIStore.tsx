@@ -2,8 +2,9 @@ import { create } from "zustand";
 
 interface UIState {
   darkMode: boolean;
-  toggleDarkMode: () => void;
   setDarkMode: (status: boolean) => void;
+  font: string;
+  setFont: (status: string) => void;
 }
 
 const getInitialDarkMode = () => {
@@ -11,16 +12,19 @@ const getInitialDarkMode = () => {
   return stored ? stored === "true" : false;
 };
 
+const getInitialFont = () => {
+  return localStorage.getItem("font") || "sans";
+};
+
 export const useUIStore = create<UIState>((set) => ({
   darkMode: getInitialDarkMode(),
-  toggleDarkMode: () =>
-    set((state) => {
-      const newMode = !state.darkMode;
-      localStorage.setItem("darkMode", newMode.toString());
-      return { darkMode: newMode };
-    }),
   setDarkMode: (value) => {
     localStorage.setItem("darkMode", value.toString());
     set({ darkMode: value });
+  },
+  font: getInitialFont(),
+  setFont: (value) => {
+    localStorage.setItem("font", value);
+    set({ font: value });
   },
 }));

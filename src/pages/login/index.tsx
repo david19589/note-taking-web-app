@@ -59,7 +59,6 @@ function Login() {
       if (response.data?.token) {
         Cookies.set("authToken", response.data?.token, { expires: 7 });
         Cookies.set("userEmail", data.email, { expires: 7 });
-        console.log("Login successful, token stored in cookies.");
         navigate("/");
       }
     } catch (err) {
