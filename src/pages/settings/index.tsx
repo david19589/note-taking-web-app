@@ -82,7 +82,7 @@ function Settings() {
         </div>
         <span
           className={clsx(
-            darkMode ? "bg-[#F3F5F8]" : "bg-[#232530]",
+            darkMode ? "bg-[#232530]" : "bg-[#F3F5F8]",
             "flex h-[0.0625rem] w-full mt-[0.75rem]"
           )}
         />

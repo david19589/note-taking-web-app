@@ -62,17 +62,23 @@ function ChangeFont() {
               setSelected("sans");
             }}
             className={clsx(
-              darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
-              "flex items-center justify-between gap-[0.375rem] w-full outline-none cursor-pointer border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
+              selected === "sans"
+                ? darkMode
+                  ? "bg-[#232530] border-[#2B303B] cursor-default"
+                  : "bg-[#F3F5F8] border-[#E0E4EA] cursor-default"
+                : darkMode
+                ? "bg-[#232530] border-[#2B303B] hover:bg-[#2325309f] cursor-pointer"
+                : "bg-[#F3F5F8] border-[#E0E4EA] hover:bg-[#d3d5d854] cursor-pointer",
+              "flex items-center justify-between gap-[0.375rem] w-full outline-none border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
             )}
           >
             <div className="flex items-center gap-[0.375rem]">
               <h2
                 className={clsx(
-                  darkMode ? "bg-[#0E121B]" : "bg-[#FFF] border-[#E0E4EA]",
-                  "p-[0.45rem] border-[0.0625rem] border-[#2B303B] rounded-xl select-none"
+                  darkMode
+                    ? "bg-[#0E121B] text-[#FFF] border-[#2B303B]"
+                    : "bg-[#FFF] border-[#E0E4EA]",
+                  "p-[0.45rem] border-[0.0625rem] rounded-xl select-none font-sans"
                 )}
               >
                 Aa
@@ -81,7 +87,7 @@ function ChangeFont() {
                 <h3
                   className={clsx(
                     darkMode ? "text-[#FFF]" : "text-[#2B303B]",
-                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500]"
+                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500] font-sans"
                   )}
                 >
                   Sans-serif
@@ -89,7 +95,7 @@ function ChangeFont() {
                 <p
                   className={clsx(
                     darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                    "text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start"
+                    "text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start font-sans"
                   )}
                 >
                   Clean and modern, easy to read.
@@ -111,17 +117,23 @@ function ChangeFont() {
               setSelected("serif");
             }}
             className={clsx(
-              darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
-              "flex items-center justify-between gap-[0.375rem] w-full outline-none cursor-pointer border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
+              selected === "serif"
+                ? darkMode
+                  ? "bg-[#232530] border-[#2B303B] cursor-default"
+                  : "bg-[#F3F5F8] border-[#E0E4EA] cursor-default"
+                : darkMode
+                ? "bg-[#232530] border-[#2B303B] hover:bg-[#2325309f] cursor-pointer"
+                : "bg-[#F3F5F8] border-[#E0E4EA] hover:bg-[#d3d5d854] cursor-pointer",
+              "flex items-center justify-between gap-[0.375rem] w-full outline-none border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
             )}
           >
             <div className="flex items-center gap-[0.375rem]">
               <h2
                 className={clsx(
-                  darkMode ? "bg-[#0E121B]" : "bg-[#FFF] border-[#E0E4EA]",
-                  "p-[0.45rem] border-[0.0625rem] border-[#2B303B] rounded-xl select-none"
+                  darkMode
+                    ? "bg-[#0E121B] text-[#FFF] border-[#2B303B]"
+                    : "bg-[#FFF] border-[#E0E4EA]",
+                  "p-[0.45rem] border-[0.0625rem] rounded-xl select-none font-serif"
                 )}
               >
                 Aa
@@ -130,7 +142,7 @@ function ChangeFont() {
                 <h3
                   className={clsx(
                     darkMode ? "text-[#FFF]" : "text-[#2B303B]",
-                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500]"
+                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500] font-serif"
                   )}
                 >
                   Serif
@@ -138,7 +150,7 @@ function ChangeFont() {
                 <p
                   className={clsx(
                     darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                    "text-serif text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start"
+                    "text-serif text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start font-serif"
                   )}
                 >
                   Classic and elegant for a timeless feel.
@@ -160,17 +172,23 @@ function ChangeFont() {
               setSelected("monospace");
             }}
             className={clsx(
-              darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
-              "flex items-center justify-between gap-[0.375rem] w-full outline-none cursor-pointer border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
+              selected === "monospace"
+                ? darkMode
+                  ? "bg-[#232530] border-[#2B303B] cursor-default"
+                  : "bg-[#F3F5F8] border-[#E0E4EA] cursor-default"
+                : darkMode
+                ? "bg-[#232530] border-[#2B303B] hover:bg-[#2325309f] cursor-pointer"
+                : "bg-[#F3F5F8] border-[#E0E4EA] hover:bg-[#d3d5d854] cursor-pointer",
+              "flex items-center justify-between gap-[0.375rem] w-full outline-none border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
             )}
           >
             <div className="flex items-center gap-[0.375rem]">
               <h2
                 className={clsx(
-                  darkMode ? "bg-[#0E121B]" : "bg-[#FFF] border-[#E0E4EA]",
-                  "p-[0.45rem] border-[0.0625rem] border-[#2B303B] rounded-xl select-none"
+                  darkMode
+                    ? "bg-[#0E121B] text-[#FFF] border-[#2B303B]"
+                    : "bg-[#FFF] border-[#E0E4EA]",
+                  "p-[0.45rem] border-[0.0625rem] rounded-xl select-none font-mono"
                 )}
               >
                 Aa
@@ -179,7 +197,7 @@ function ChangeFont() {
                 <h3
                   className={clsx(
                     darkMode ? "text-[#FFF]" : "text-[#2B303B]",
-                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500]"
+                    "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[500] font-mono"
                   )}
                 >
                   Monospace
@@ -187,7 +205,7 @@ function ChangeFont() {
                 <p
                   className={clsx(
                     darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                    "text-serif text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start"
+                    "text-serif text-[0.75rem] leading-[0.875rem] tracking-[-0.0125rem] font-[400] text-start font-mono"
                   )}
                 >
                   Code-like, great for a technical vibe.

@@ -16,7 +16,7 @@ function ChangeTheme() {
 
   const [selected, setSelected] = useState(darkMode ? "dark" : "light");
 
-  return ( 
+  return (
     <div className={clsx(darkMode ? "bg-[#0E121B]" : "bg-[#FFF]", "h-full")}>
       <Header />
       <div className="mt-[1.25rem] px-[1rem]">
@@ -66,10 +66,14 @@ function ChangeTheme() {
               setDarkMode(false);
             }}
             className={clsx(
-              darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
-              "flex items-center justify-between gap-[0.375rem] w-full [21.5rem] outline-none cursor-pointer border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
+              selected === "light"
+                ? darkMode
+                  ? "bg-[#232530] border-[#2B303B] cursor-default"
+                  : "bg-[#F3F5F8] border-[#E0E4EA] cursor-default"
+                : darkMode
+                ? "bg-[#232530] border-[#2B303B] hover:bg-[#2325309f] cursor-pointer"
+                : "bg-[#F3F5F8] border-[#E0E4EA] hover:bg-[#d3d5d854] cursor-pointer",
+              "flex items-center justify-between gap-[0.375rem] w-full outline-none border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
             )}
           >
             <div className="flex items-center gap-[0.375rem]">
@@ -77,7 +81,7 @@ function ChangeTheme() {
                 <SunSvgDarkMode
                   className={clsx(
                     darkMode ? "bg-[#0E121B]" : "bg-[#FFF] border-[#E0E4EA]",
-                    "p-[0.45rem] border-[0.0625rem] border-[#2B303B] rounded-xl"
+                    "w-[2.52375rem] h-[2.52375rem] p-[0.45rem] border-[0.0625rem] border-[#2B303B] rounded-xl"
                   )}
                 />
               ) : (
@@ -124,10 +128,14 @@ function ChangeTheme() {
               setDarkMode(true);
             }}
             className={clsx(
-              darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
-              "flex items-center justify-between gap-[0.375rem] w-full [21.5rem] outline-none cursor-pointer border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
+              selected === "dark"
+                ? darkMode
+                  ? "bg-[#232530] border-[#2B303B] cursor-default"
+                  : "bg-[#F3F5F8] border-[#E0E4EA] cursor-default"
+                : darkMode
+                ? "bg-[#232530] border-[#2B303B] hover:bg-[#2325309f] cursor-pointer"
+                : "bg-[#F3F5F8] border-[#E0E4EA] hover:bg-[#d3d5d854] cursor-pointer",
+              "flex items-center justify-between gap-[0.375rem] w-full outline-none border-[0.0625rem] mb-[1rem] rounded-2xl p-[1rem]"
             )}
           >
             <div className="flex items-center gap-[0.375rem]">
