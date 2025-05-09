@@ -45,8 +45,8 @@ function Search() {
             onChange={(e) => setTag(e.target.value)}
             className={clsx(
               darkMode
-                ? "bg-[#232530] border-[#2B303B]"
-                : "bg-[#F3F5F8] border-[#E0E4EA]",
+                ? "bg-[#232530] border-[#2B303B] placeholder:text-[#CACFD8]"
+                : "bg-[#F3F5F8] border-[#E0E4EA] placeholder:text-[#2B303B]",
               "p-[0.75rem] border-[0.0625rem] rounded-lg outline-none pl-[2.5rem] w-full"
             )}
           />

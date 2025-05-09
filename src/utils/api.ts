@@ -23,6 +23,7 @@ const apiUrl = {
   googleAuth: "http://localhost:5000/api/auth/google-auth",
   forgotPassword: "http://localhost:5000/api/auth/forgot-password",
   resetPassword: "http://localhost:5000/api/auth/reset-password",
+  logout: "http://localhost:5000/api/auth/logout",
 };
 
 const handleRequest = async <T>(
@@ -36,6 +37,7 @@ const handleRequest = async <T>(
       method,
       url: `${apiUrl[resource]}${endpoint}`,
       data,
+      withCredentials: true,
     });
     return { status: response.status, data: response.data };
   } catch (err) {
@@ -68,3 +70,4 @@ export const resetPassword = (
     resetPasswordToken,
     userPassword,
   });
+export const logout = () => handleRequest("logout", "post");

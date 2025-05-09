@@ -11,9 +11,27 @@ import FontSvgDarkMode from "../../assets/icons/font_svg_dark_mode";
 import LockSvgDarkMode from "../../assets/icons/lock_svg_dark_,mode";
 import LogoutSvgDarkMode from "../../assets/icons/logout_svg_dark_mode";
 import { Link } from "react-router-dom";
+import { logout } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Settings() {
   const { darkMode } = useUIStore();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      Cookies.remove("token");
+      Cookies.remove("authToken");
+      Cookies.remove("userEmail");
+
+      navigate("/auth/login", { replace: true });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   return (
     <div className={clsx(darkMode ? "bg-[#0E121B]" : "bg-[#FFF]", "h-full")}>
@@ -86,7 +104,10 @@ function Settings() {
             "flex h-[0.0625rem] w-full mt-[0.75rem]"
           )}
         />
-        <button className="flex items-center gap-[0.375rem] w-max mt-[1rem] outline-none cursor-pointer">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-[0.375rem] w-max mt-[1rem] outline-none cursor-pointer"
+        >
           {darkMode ? (
             <LogoutSvgDarkMode />
           ) : (

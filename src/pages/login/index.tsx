@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import { authWithGoogle } from "../../utils/google_auth";
 import { useUIStore } from "../../stores/useUIStore";
+import { useNotesStore } from "../../stores/useNotesStore";
 
 type FormData = {
   email: string;
@@ -38,6 +39,7 @@ function Login() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { darkMode } = useUIStore();
+  const { fetchNotes } = useNotesStore();
 
   const {
     register,
@@ -61,6 +63,8 @@ function Login() {
         Cookies.set("userEmail", data.email, { expires: 7 });
         navigate("/");
       }
+
+      fetchNotes()
     } catch (err) {
       console.error("Error logging in:", err);
 
