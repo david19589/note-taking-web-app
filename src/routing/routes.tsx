@@ -14,6 +14,7 @@ import ChangeFont from "../pages/settings_change_font/index.tsx";
 import Signup from "../pages/signup";
 import TagList from "../pages/tag_list/index.tsx";
 import TagSelected from "../pages/tag_selected/index.tsx";
+import ChangePassword from "../pages/settings_change_password/index.tsx";
 
 const Routes = () => [
   {
@@ -78,6 +79,10 @@ const Routes = () => [
       {
         path: "/settings/change-font",
         element: <ChangeFont />,
+      },
+      {
+        path: "/settings/change-password",
+        element: <ChangePassword />,
       },
     ],
   },

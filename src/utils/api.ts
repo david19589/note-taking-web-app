@@ -23,6 +23,7 @@ const apiUrl = {
   googleAuth: "http://localhost:5000/api/auth/google-auth",
   forgotPassword: "http://localhost:5000/api/auth/forgot-password",
   resetPassword: "http://localhost:5000/api/auth/reset-password",
+  changePassword: "http://localhost:5000/api/auth/change-password",
   logout: "http://localhost:5000/api/auth/logout",
 };
 
@@ -69,5 +70,10 @@ export const resetPassword = (
   handleRequest("resetPassword", "post", "", {
     resetPasswordToken,
     userPassword,
+  });
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  handleRequest("changePassword", "post", "", {
+    currentPassword,
+    newPassword,
   });
 export const logout = () => handleRequest("logout", "post");
