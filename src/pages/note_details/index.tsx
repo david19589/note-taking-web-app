@@ -6,11 +6,15 @@ import clockSvg from "../../assets/icon-clock.svg";
 import Menu from "../../components/menu";
 import Header from "../../components/header";
 import TagSvgDetails from "../../assets/icons/tag_svg_details";
+import statusSvg from "../../assets/icon-status.svg";
+import restoreSvg from "../../assets/icon-restore.svg";
 import TagSvgDetailsDarkMode from "../../assets/icons/tag_svg_details_dark_mode";
 import ClockSvgDetailsDarkMode from "../../assets/icons/clock_svg_details_dark_mode";
 import DeleteSvgDetailsDarkMode from "../../assets/icons/delete_svg_details_dark_mode";
 import ArchiveSvgDetailsDarkMode from "../../assets/icons/archive_svg_details_dark_mode";
 import ArrowLeftDetailsDarkMode from "../../assets/icons/arrow_left_details_dark_mode";
+import StatusSvgDetailsDarkMode from "../../assets/icons/status_svg_details_dark_mode";
+import RestoreSvgDetailsDarkMode from "../../assets/icons/restore_svg_details_dark_mode";
 import { noteDataTypes, updateNote } from "../../utils/api";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -154,7 +158,17 @@ function NoteDetails() {
               className="cursor-pointer outline-none"
             >
               {darkMode ? (
-                <ArchiveSvgDetailsDarkMode />
+                selectedNote.isArchived ? (
+                  <RestoreSvgDetailsDarkMode />
+                ) : (
+                  <ArchiveSvgDetailsDarkMode />
+                )
+              ) : selectedNote.isArchived ? (
+                <img
+                  src={restoreSvg}
+                  alt="restoreSvg"
+                  className="select-none"
+                />
               ) : (
                 <img
                   src={archiveSvg}
@@ -198,9 +212,7 @@ function NoteDetails() {
             darkMode ? "text-[#FFF]" : "text-[#0E121B]",
             "text-[1.5rem] leading-[1.75rem] tracking-[-0.03125rem] font-[700] mb-[1rem] w-full resize-none cursor-text outline-none"
           )}
-        >
-          {selectedNote.title}
-        </textarea>
+        />
         <div className="flex flex-col gap-[0.75rem]">
           <div className="flex items-center gap-[5rem]">
             <div className="flex items-center gap-[0.375rem]">
@@ -216,16 +228,16 @@ function NoteDetails() {
             </div>
             <div ref={dropdownRef} className="flex gap-[1rem] relative">
               <div className="md:max-w-[20rem] flex max-w-[8rem] overflow-x-scroll custom-scrollbar">
-                {selectedNote.tags.map((tag, index) => (
+                {tags.map((tag, index) => (
                   <h3
                     key={index}
                     className={clsx(
                       darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                      "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                      "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] text-nowrap"
                     )}
                   >
                     {tag}
-                    {index < selectedNote.tags.length - 1 && ","}
+                    {index < tags.length - 1 && ","}
                   </h3>
                 ))}
               </div>
@@ -312,9 +324,13 @@ function NoteDetails() {
             <div className="flex items-center gap-[4.375rem]">
               <div className="flex items-center gap-[0.375rem]">
                 {darkMode ? (
-                  <ClockSvgDetailsDarkMode />
+                  <StatusSvgDetailsDarkMode />
                 ) : (
-                  <img src={clockSvg} alt="clockSvg" className="select-none" />
+                  <img
+                    src={statusSvg}
+                    alt="statusSvg"
+                    className="select-none"
+                  />
                 )}
                 <h3
                   className={clsx(
@@ -367,7 +383,7 @@ function NoteDetails() {
         </div>
         <span
           className={clsx(
-            darkMode ? "bg-[#F3F5F8]" : "bg-[#232530]",
+            darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
             "flex h-[0.0625rem] w-full mt-[0.75rem]"
           )}
         />
@@ -379,9 +395,7 @@ function NoteDetails() {
             darkMode ? "text-[#CACFD8]" : "text-[#232530]",
             "text-[0.875rem] leading-[1rem] tracking-[-0.0125rem] font-[400] w-full h-[25rem] resize-none mt-[0.75rem] transition-all duration-150 cursor-text outline-none"
           )}
-        >
-          {selectedNote.content}
-        </textarea>
+        />
       </div>
       <Menu />
       <DeleteNoteModal selectedNote={selectedNote} />
