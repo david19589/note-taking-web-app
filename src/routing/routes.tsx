@@ -4,7 +4,6 @@ import ArchivedNotes from "../pages/archived_notes/index.tsx";
 import ForgotPassword from "../pages/forgot_password";
 import GoogleAuthFail from "../pages/google_auth_fail";
 import Login from "../pages/login";
-import Main from "../pages/main/index.tsx";
 import NoteDetails from "../pages/note_details";
 import ResetPassword from "../pages/reset_password";
 import Search from "../pages/search/index.tsx";
@@ -15,6 +14,7 @@ import Signup from "../pages/signup";
 import TagList from "../pages/tag_list/index.tsx";
 import TagSelected from "../pages/tag_selected/index.tsx";
 import ChangePassword from "../pages/settings_change_password/index.tsx";
+import ResponsiveMain from "../pages/Responsive_main/index.tsx";
 
 const Routes = () => [
   {
@@ -42,7 +42,7 @@ const Routes = () => [
     children: [
       {
         path: "/",
-        element: <Main />,
+        element: <ResponsiveMain />,
       },
       {
         path: "/note/:id",
