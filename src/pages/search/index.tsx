@@ -59,51 +59,58 @@ function Search() {
         >
           All notes matching ”{tag}” are displayed below.
         </h3>
-        {filteredNotes.map((note, index) => (
-          <Link
-            to={`/note/${note._id}`}
-            key={index}
-            className="flex flex-col my-[0.5rem] pl-[0.5rem] gap-[0.75rem] mb-[0.75rem] cursor-pointer"
-          >
-            <h2
-              className={clsx(
-                darkMode ? "text-[#FFF]" : "text-[#0E121B]",
-                "text-[1rem] leading-[1.25rem] tracking-[-0.01875rem] font-[600]"
-              )}
+        <div
+          className={clsx(
+            filteredNotes.length >= 1 && "h-[calc(100vh-15rem)]",
+            "overflow-scroll custom-scrollbar"
+          )}
+        >
+          {filteredNotes.map((note, index) => (
+            <Link
+              to={`/note/${note._id}`}
+              key={index}
+              className="flex flex-col my-[0.5rem] pl-[0.5rem] gap-[0.75rem] mb-[0.75rem] cursor-pointer"
             >
-              {note.title}
-            </h2>
-            <div className="flex">
-              {note.tags.map((tag, index) => (
-                <h3
-                  key={index}
-                  className={clsx(
-                    darkMode
-                      ? "text-[#FFF] bg-[#525866]"
-                      : "text-[#0E121B] bg-[#E0E4EA]",
-                    "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400] rounded-md w-max px-[0.375rem] py-[0.2rem] mr-[0.25rem]"
-                  )}
-                >
-                  {tag}
-                </h3>
-              ))}
-            </div>
-            <h3
-              className={clsx(
-                darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
-                "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
-              )}
-            >
-              {new Date(note.lastEdited).toDateString()}
-            </h3>
-            <span
-              className={clsx(
-                darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
-                "flex h-[0.0625rem] w-full"
-              )}
-            />
-          </Link>
-        ))}
+              <h2
+                className={clsx(
+                  darkMode ? "text-[#FFF]" : "text-[#0E121B]",
+                  "text-[1rem] leading-[1.25rem] tracking-[-0.01875rem] font-[600] overflow-scroll custom-scrollbar "
+                )}
+              >
+                {note.title}
+              </h2>
+              <div className="flex overflow-scroll custom-scrollbar">
+                {note.tags.map((tag, index) => (
+                  <h3
+                    key={index}
+                    className={clsx(
+                      darkMode
+                        ? "text-[#FFF] bg-[#525866]"
+                        : "text-[#0E121B] bg-[#E0E4EA]",
+                      "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400] rounded-md w-max px-[0.375rem] py-[0.2rem] mr-[0.25rem]"
+                    )}
+                  >
+                    {tag}
+                  </h3>
+                ))}
+              </div>
+              <h3
+                className={clsx(
+                  darkMode ? "text-[#CACFD8]" : "text-[#2B303B]",
+                  "text-[0.75rem] leading-[1rem] tracking-[-0.0125rem] font-[400]"
+                )}
+              >
+                {new Date(note.lastEdited).toDateString()}
+              </h3>
+              <span
+                className={clsx(
+                  darkMode ? "bg-[#232530]" : "bg-[#E0E4EA]",
+                  "flex h-[0.0625rem] w-full"
+                )}
+              />
+            </Link>
+          ))}
+        </div>
         {tag.trim() !== "" && filteredNotes.length < 1 && (
           <>
             <div
