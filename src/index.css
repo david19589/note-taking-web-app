@@ -32,3 +32,7 @@ body {
   border-radius: 5px;
   scrollbar-color: rgb(0, 0, 0, 0.103) transparent;
 }
+
+.custom-scrollbar2 {
+  scrollbar-width: none;
+}
